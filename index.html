@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="公務車管理查詢系統作品展示版。所有人員、車牌、據點與行程內容均為虛構資料。">
+  <title>FleetFlow｜公務車管理系統</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">FF</span><span><strong>FleetFlow</strong><small>公務車管理系統</small></span></div>
+    <nav aria-label="主要功能">
+      <button class="nav-item active" data-view="overview"><span class="nav-icon">⌂</span><span>總覽</span></button>
+      <button class="nav-item" data-view="records"><span class="nav-icon">▤</span><span>申請紀錄</span></button>
+      <button class="nav-item" data-view="people"><span class="nav-icon">人</span><span>人員查詢</span></button>
+      <button class="nav-item" data-view="vehicles"><span class="nav-icon">車</span><span>車輛查詢</span></button>
+    </nav>
+    <div class="sidebar-note"><i></i><div><strong>作品展示模式</strong><small>所有資料均為虛構</small></div></div>
+    <div class="profile"><span>WY</span><div><strong>系統管理者</strong><small>檢視權限</small></div></div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" aria-label="開啟選單">☰</button>
+      <div><p class="breadcrumb">公務車管理／<span id="breadcrumb">總覽</span></p><h1 id="pageTitle">營運總覽</h1></div>
+      <div class="top-actions"><span class="today">資料更新：2026-09-10 09:30</span><button class="ghost" id="aboutBtn">關於此 Demo</button><button class="primary" id="exportBtn">匯出 CSV</button></div>
+    </header>
+
+    <section class="view active" id="view-overview" aria-labelledby="pageTitle">
+      <div class="scopebar"><div><span class="scope-label">資料範圍</span><strong>最近 30 天</strong></div><div><span class="scope-label">據點</span><select id="overviewSite"><option value="ALL">全部據點</option></select></div><button class="secondary" id="overviewRefresh">重新整理</button></div>
+      <div class="kpi-grid">
+        <article class="kpi"><span class="kpi-label">申請單</span><strong id="kpiRequests">0</strong><small>已完成用車申請</small></article>
+        <article class="kpi"><span class="kpi-label">用車趟次</span><strong id="kpiTrips">0</strong><small>期間內行程明細</small></article>
+        <article class="kpi"><span class="kpi-label">使用車輛</span><strong id="kpiVehicles">0</strong><small>有行駛紀錄車輛</small></article>
+        <article class="kpi accent"><span class="kpi-label">累計里程</span><strong id="kpiDistance">0</strong><small>公里</small></article>
+      </div>
+      <div class="overview-grid">
+        <article class="panel popular-panel"><div class="panel-head"><div><span class="section-kicker">使用統計</span><h2>熱門車輛排行</h2></div><span class="panel-note">依使用趟次排序</span></div><div id="vehicleRanking" class="ranking"></div></article>
+        <article class="panel"><div class="panel-head"><div><span class="section-kicker">近期狀況</span><h2>異常摘要</h2></div><span class="badge amber">2 項提醒</span></div><div class="alerts"><div><span class="alert-icon amber-bg">!</span><div><strong>里程資料待確認</strong><small>DEMO-3003 返回里程與前次紀錄差異較大</small></div><button data-view-link="records">查看</button></div><div><span class="alert-icon blue-bg">i</span><div><strong>費用單據待補充</strong><small>TRIP-0905 其他費用尚未附註說明</small></div><button data-view-link="records">查看</button></div><div class="ok-row"><span>✓</span><div><strong>其餘紀錄皆正常</strong><small>最近一次檢查：今天 09:30</small></div></div></div></article>
+      </div>
+      <article class="panel"><div class="panel-head"><div><span class="section-kicker">最新資料</span><h2>最近完成申請</h2></div><button class="text-btn" data-view-link="records">查看全部</button></div><div class="table-wrap"><table><thead><tr><th>申請單號</th><th>日期</th><th>申請人</th><th>據點</th><th>車牌</th><th>用途</th><th class="num">里程</th><th>狀態</th></tr></thead><tbody id="recentRows"></tbody></table></div></article>
+    </section>
+
+    <section class="view" id="view-records">
+      <article class="query-card"><div class="query-title"><span>⌕</span><div><h2>申請紀錄查詢</h2><p>依日期、據點、人員或車牌篩選歷史申請</p></div></div><div class="query-grid records-query"><label>開始日期<input type="date" id="recordStart" value="2026-07-01"></label><label>結束日期<input type="date" id="recordEnd" value="2026-09-30"></label><label>據點<select id="recordSite"><option value="ALL">全部據點</option></select></label><label>申請人<select id="recordDriver"><option value="ALL">全部人員</option></select></label><label>車牌<select id="recordVehicle"><option value="ALL">全部車輛</option></select></label><div class="query-actions"><button class="secondary" id="recordReset">清除</button><button class="primary" id="recordSearch">查詢</button></div></div></article>
+      <article class="panel result-panel"><div class="panel-head"><div><span class="section-kicker">查詢結果</span><h2>申請紀錄</h2></div><span class="result-count" id="recordCount">0 筆</span></div><div class="table-wrap"><table><thead><tr><th>申請單號</th><th>申請日期</th><th>據點</th><th>申請人</th><th>車牌</th><th>行程</th><th class="num">里程</th><th class="num">費用</th><th></th></tr></thead><tbody id="recordRows"></tbody></table></div><div class="pagination" id="recordPagination"></div></article>
+    </section>
+
+    <section class="view" id="view-people">
+      <article class="query-card"><div class="query-title"><span>人</span><div><h2>人員用車紀錄</h2><p>查詢個人跨據點的用車次數、里程與費用</p></div></div><div class="query-grid people-query"><label>人員<select id="personSelect"></select></label><label>開始日期<input type="date" id="personStart" value="2026-07-01"></label><label>結束日期<input type="date" id="personEnd" value="2026-09-30"></label><button class="primary" id="personSearch">查詢</button></div></article>
+      <div class="summary-strip" id="personSummary"></div>
+      <article class="panel result-panel"><div class="panel-head"><div><span class="section-kicker">人員明細</span><h2 id="personResultTitle">王小明的用車紀錄</h2></div><span class="result-count" id="personCount">0 筆</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>據點</th><th>車牌</th><th>用途</th><th>出發／返回</th><th>起點／終點</th><th class="num">里程</th><th class="num">費用</th><th></th></tr></thead><tbody id="personRows"></tbody></table></div><div class="pagination" id="personPagination"></div></article>
+    </section>
+
+    <section class="view" id="view-vehicles">
+      <article class="query-card"><div class="query-title"><span>車</span><div><h2>車輛使用紀錄</h2><p>查詢指定車輛的駕駛人、里程與各項費用</p></div></div><div class="query-grid people-query"><label>車牌<select id="vehicleSelect"></select></label><label>開始日期<input type="date" id="vehicleStart" value="2026-07-01"></label><label>結束日期<input type="date" id="vehicleEnd" value="2026-09-30"></label><button class="primary" id="vehicleSearch">查詢</button></div></article>
+      <div class="summary-strip" id="vehicleSummary"></div>
+      <div class="vehicle-result-grid"><article class="panel result-panel"><div class="panel-head"><div><span class="section-kicker">車輛明細</span><h2 id="vehicleResultTitle">DEMO-1001 使用紀錄</h2></div><span class="result-count" id="vehicleCount">0 筆</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>駕駛</th><th>用途</th><th>出發／返回</th><th class="num">里程</th><th class="num">油費</th><th class="num">其他</th><th></th></tr></thead><tbody id="vehicleRows"></tbody></table></div><div class="pagination" id="vehiclePagination"></div></article><aside class="panel recent-drivers"><div class="panel-head"><div><span class="section-kicker">使用人員</span><h2>近期駕駛</h2></div></div><div id="recentDrivers"></div></aside></div>
+    </section>
+    <footer>FleetFlow Portfolio Demo <span>© 2026 王永閎</span></footer>
+  </main>
+
+  <div class="overlay" id="drawerBackdrop"></div>
+  <aside class="drawer" id="detailDrawer" aria-hidden="true"><button class="close" id="drawerClose" aria-label="關閉">×</button><span class="section-kicker">申請單明細</span><h2 id="drawerTitle">行程資料</h2><div id="drawerContent"></div></aside>
+  <div class="overlay" id="modalBackdrop"></div>
+  <section class="modal" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle"><button class="close" id="modalClose" aria-label="關閉">×</button><span class="section-kicker">PORTFOLIO DEMO</span><h2 id="aboutTitle">關於 FleetFlow</h2><p>這是依公務車管理情境重新設計的作品展示版。系統將申請單與行程明細整理成同一個管理入口，支援總覽、申請紀錄、人員與車輛查詢。</p><div class="about-grid"><div><small>負責範圍</small><strong>需求分析、資料整合、前後端設計</strong></div><div><small>核心功能</small><strong>跨表查詢、歷史追蹤、統計彙整</strong></div></div><p class="disclaimer">所有人名、車牌、據點、行程、數值與業務情境均為虛構，不包含任職公司的程式碼、畫面、內部資料或機密資訊。</p></section>
+  <div class="toast" id="toast" role="status">已匯出目前查詢資料</div>
+  <script src="app.js"></script>
+</body>
+</html>
