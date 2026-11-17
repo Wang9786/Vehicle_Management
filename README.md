@@ -21,10 +21,12 @@ FleetFlow 是一套公務車管理作品集 Demo，將用車申請與行程明�
 
 ## 技術
 
+- Python
+- FastAPI
 - HTML5
 - CSS3
-- Vanilla JavaScript
-- Mock Data
+- JavaScript
+- Oracle
 
 ## 系統概念
 
